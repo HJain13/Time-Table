@@ -3,29 +3,29 @@ const timeTable = [
         day:"Monday",
         details : [
             {
-                StartingTime:2,
-                FinishTime:3,
+                StartingTime:"14:00:00",
+                FinishTime:"15:00:00",
                 subject:"CN",
                 LT:10,
                 faculty:"Poonam Gera"
             },
             {
-                StartingTime:3,
-                FinishTime:4,
+                StartingTime:"15:00:00",
+                FinishTime:"16:00:00",
                 subject:"BME",
                 LT:7,
                 faculty:"Amit Neogi"
             },
             {
-                StartingTime:4,
-                FinishTime:5,
+                StartingTime:"16:00:00",
+                FinishTime:"17:00:00",
                 subject:"CD",
                 LT:3,
                 faculty:"JayPrakash"
             },
             {
-                StartingTime:5,
-                FinishTime:6,
+                StartingTime:"17:00:00",
+                FinishTime:"18:00:00",
                 subject:"SNA",
                 LT:6,
                 faculty:"Sakhti Balan"
@@ -36,15 +36,15 @@ const timeTable = [
         day:"Tuesday",
         details : [
             {
-                StartingTime:1,
-                FinishTime:2.30,
+                StartingTime:"1:00:00",
+                FinishTime:"14:30:00",
                 subject:"CS",
                 LT:4,
                 faculty:"Poonam Gera"
             },
             {
-                time:4,
-                FinishTime:5.30,
+                time:"16:00:00",
+                FinishTime:"17:30:00",
                 subject:"LCT",
                 LT:3,
                 faculty:"Renu"
@@ -55,29 +55,29 @@ const timeTable = [
         day:"Wednesday",
         details : [
             {
-                StartingTime:1,
-                FinishTime:2,
+                StartingTime:"13:00:00",
+                FinishTime:"14:00:00",
                 subject:"CN",
                 LT:10,
                 faculty:"Kshitiz Verma"
             },
             {
-                StartingTime:2,
-                FinishTime:3,
+                StartingTime:"14:00:00",
+                FinishTime:"15:00:00",
                 subject:"BME",
                 LT:7,
                 faculty:"Amit Neogi"
             },
             {
-                StartingTime:3,
-                FinishTime:4,
+                StartingTime:"15:00:00",
+                FinishTime:"16:00:00",
                 subject:"CD",
                 LT:3,
                 faculty:"JayPrakash"
             },
             {
-                StartingTime:4,
-                FinishTime:5,
+                StartingTime:"16:00:00",
+                FinishTime:"17:00:00",
                 subject:"SNA",
                 LT:6,
                 faculty:"Sakhti Balan"
@@ -88,15 +88,15 @@ const timeTable = [
         day:"Thrusday",
         details : [
             {
-                StartingTime:2.30,
-                FinishTime:4,
+                StartingTime:"14:30:00",
+                FinishTime:"16:00:00",
                 subject:"CS",
                 LT:4,
                 faculty:"Poonam Gera"
             },
             {
-                time:4,
-                FinishTime:5.30,
+                time:"16:00:00",
+                FinishTime:"17:30:00",
                 subject:"LCT",
                 LT:3,
                 faculty:"Renu"
@@ -108,29 +108,29 @@ const timeTable = [
         details : [
             
             {
-                StartingTime:1,
-                FinishTime:2,
+                StartingTime:"13:00:00",
+                FinishTime:"14:00:00",
                 subject:"BME",
                 LT:7,
                 faculty:"Amit Neogi"
             },
             {
-                StartingTime:2,
-                FinishTime:3,
+                StartingTime:"14:00:00",
+                FinishTime:"15:00:00",
                 subject:"CD",
                 LT:3,
                 faculty:"JayPrakash"
-            },,
+            },
             {
-                StartingTime:3,
-                FinishTime:4,
+                StartingTime:"15:00:00",
+                FinishTime:"16:00:00",
                 subject:"SNA",
                 LT:6,
                 faculty:"Sakhti Balan"
             },
             {
-                StartingTime:5,
-                FinishTime:6,
+                StartingTime:"17:00:00",
+                FinishTime:"18:00:00",
                 subject:"CN",
                 LT:10,
                 faculty:"Poonam Gera"
@@ -138,6 +138,39 @@ const timeTable = [
         ]
     }
 ]
+function DayDetails(data){
+    return `
+        ${data.details.map(x => `
+        <div class="col">
+            <div><strong>Time</strong>:${x.StartingTime}-${x.FinishTime}</div> 
+            <div><strong>Subject:</strong> ${x.subject}</div> 
+            <div><strong>LT: </strong>${x.LT}</div> 
+            <div><strong>Faculty:</strong>${x.faculty}</div>
+        </div>`).join("")}      
+   `;
+}
+function NextClass(){
+    var i=0;
+    var days = ["Sunday","Monday","Tuesday","Wednesday","Thrusday","Friday","Saturday"];
+   var dayNo=new Date().getDay();
+    for (var key in timeTable) {
+      var x = timeTable[key];
+        if(x.day===days[dayNo]){
+            var currentTime;
+            var time =new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
+        }      
+    }
+   console.log(dayNo);
+}
+
+document.getElementById("app").innerHTML = `
+<h1>Time Table</h1>
+<div class="container">
+${timeTable.map(data =>`<div class="row"><div class="col">${data.day}</div> ${DayDetails(data)}</div>`).join("")}
+</div>
+<div>${NextClass()}</div>
+`;
+
 
 /* const petsData = [
   {
@@ -198,20 +231,3 @@ document.getElementById("app").innerHTML = `
   <p class="footer">These ${petsData.length} pets were added recently. Check back soon for updates.</p>
 `;
  */
-function DayDetails(data){
-    return `
-        ${data.details.map(x => `
-        <div class="col">
-            <div><strong>Time</strong>:${x.StartingTime}-${x.FinishTime}pm</div> 
-            <div><strong>Subject:</strong> ${x.subject}</div> 
-            <div><strong>LT: </strong>${x.LT}</div> 
-            <div><strong>Faculty:</strong>${x.faculty}</div>
-        </div>`).join("")}      
-   `;
-}
-document.getElementById("app").innerHTML = `
-<h1>Time Table</h1>
-<div class="container">
-${timeTable.map(data =>`<div class="row"><div class="col">${data.day}</div> ${DayDetails(data)}</div>`).join("")}
-</div>
-`;
