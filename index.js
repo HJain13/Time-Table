@@ -95,7 +95,7 @@ const timeTable = [
                 faculty:"Poonam Gera"
             },
             {
-                time:"16:00:00",
+                StartingTime:"16:00:00",
                 FinishTime:"17:30:00",
                 subject:"LCT",
                 LT:3,
@@ -149,85 +149,76 @@ function DayDetails(data){
         </div>`).join("")}      
    `;
 }
+function Comparison(finish,start,current){
+    var f = finish.split(":");
+    var s = start.split(":");
+    var c = current.split(":");
+    var finishTime=f[0]*60*60+f[1]*60+f[2];
+    var startTime=s[0]*60*60+s[1]*60+s[2];
+    var currentTime=c[0]*60*60+c[1]*60+c[2];
+    if(finishTime>=currentTime && currentTime>startTime){
+        return true;
+    }
+    else return false;
+}
 function NextClass(){
-    var i=0;
+    var flag=0;
     var days = ["Sunday","Monday","Tuesday","Wednesday","Thrusday","Friday","Saturday"];
-   var dayNo=new Date().getDay();
+   //var dayNo=new Date().getDay();
+   var dayNo=0;
+   if(dayNo==0 || dayNo==6){
+       return`<div>Next Class is on Monday ${timeTable[0].details[0].subject} ${timeTable[0].details[0].LT} ${timeTable[0].details[0].StartingTime}</div>`
+   }
+   var storeKey;
     for (var key in timeTable) {
       var x = timeTable[key];
-        if(x.day===days[dayNo]){
-            var currentTime;
-            var time =new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
-        }      
+      if(x.day===days[dayNo]){
+            storeKey=key;
+            var currentTime =new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
+            for(var data in timeTable[key].details){
+                //console.log(Date.parse('01/01/2011 10:20:45') > Date.parse('01/01/2011 5:10:10'));
+                if(Comparison(timeTable[key].details[data].FinishTime,timeTable[key].details[data].StartingTime,currentTime)){
+                    flag=1;
+                    var nextData=parseInt(data)+1;
+                    if(timeTable[key].details[nextData].subject!=NULL){
+
+                        return`
+                            <div>Currently going on ${timeTable[key].details[data].subject} class</div>
+                            <div>Next class ${timeTable[key].details[nextData].subject} class</div><div>Subject: ${timeTable[key].details[nextData].subject}</div><div>LT: ${timeTable[key].details[nextData].LT}</div><div>Timing: ${timeTable[key].details[nextData].StartingTime}
+                        `
+                    }
+                    else{
+                        nextkey=parseInt(key)+1;
+                        if(key==5){
+                            return`<div>Currently going on ${timeTable[key].details[data].subject} class</div>
+                            <div>Next class ${timeTable[nextkey].details[0].subject} class</div><div>Subject: ${timeTable[nextkey].details[0].subject}</div><div>LT: ${timeTable[nextkey].details[0].LT}</div><div>Timing: ${timeTable[nextkey].details[0].StartingTime}`
+                        }
+                        else{
+
+                        }
+                    }
+                }                
+            }
+            
+        }  
+        
     }
-   console.log(dayNo);
+    //console.log(storeKey);
+    storeKey=parseInt(storeKey)+1;
+    if((storeKey)==5){
+        return`<div>Next Class is on Monday ${timeTable[0].details[0].subject} ${timeTable[0].details[0].LT} ${timeTable[0].details[0].StartingTime}</div>`
+    }
+    else{
+        
+        console.log(storeKey);
+        return`<div>Next Class is on ${timeTable[storeKey].day} </div><div>Subject: ${timeTable[storeKey].details[0].subject}</div><div>LT: ${timeTable[storeKey].details[0].LT}</div><div>Timing: ${timeTable[storeKey].details[0].StartingTime}</div>` 
+    }
+  // console.log(dayNo);
 }
 
 document.getElementById("app").innerHTML = `
 <h1>Time Table</h1>
 <div class="container">
 ${timeTable.map(data =>`<div class="row"><div class="col">${data.day}</div> ${DayDetails(data)}</div>`).join("")}
-</div>
-<div>${NextClass()}</div>
+</div>${NextClass()}
 `;
-
-
-/* const petsData = [
-  {
-    name: "Purrsloud",
-    species: "Cat",
-    favFoods: ["wet food", "dry food", "<strong>any</strong> food"],
-    birthYear: 2016,
-    photo: "https://learnwebcode.github.io/json-example/images/cat-2.jpg"
-  },
-  {
-    name: "Barksalot",
-    species: "Dog",
-    birthYear: 2008,
-    photo: "https://learnwebcode.github.io/json-example/images/dog-1.jpg"
-  },
-  {
-    name: "Meowsalot",
-    species: "Cat",
-    favFoods: ["tuna", "catnip", "celery"],
-    birthYear: 2012,
-    photo: "https://learnwebcode.github.io/json-example/images/cat-1.jpg"
-  }
-];
-
-function age(birthYear) {
-  let calculatedAge = new Date().getFullYear() - birthYear;
-  if (calculatedAge == 1) {
-    return "1 year old";
-  } else if (calculatedAge == 0) {
-    return "Baby";
-  } else {
-    return `${calculatedAge} years old`;
-  }
-}
-
-function foods(foods) {
-  return `
-<h4>Favorite Foods</h4>
-<ul class="foods-list">
-${foods.map(food => `<li>${food}</li>`).join("")}
-</ul>
-`;
-}
-
-function petTemplate(pet) {
-  return `
-    <div class="animal">
-    <img class="pet-photo" src="${pet.photo}">
-    <h2 class="pet-name">${pet.name} <span class="species">(${pet.species})</span></h2>
-    <p><strong>Age:</strong> ${age(pet.birthYear)}</p>
-    ${pet.favFoods ? foods(pet.favFoods) : ""}
-    </div>
-  `;
-}
-document.getElementById("app").innerHTML = `
-  <h1 class="app-title">Pets (${petsData.length} results)</h1>
-  ${petsData.map(petTemplate).join("")}
-  <p class="footer">These ${petsData.length} pets were added recently. Check back soon for updates.</p>
-`;
- */
