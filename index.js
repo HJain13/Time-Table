@@ -176,8 +176,8 @@ function checkingUpcoming(finish,start,current){
 function NextClass(){
     var flag=0;
     var days = ["Sunday","Monday","Tuesday","Wednesday","Thrusday","Friday","Saturday"];
-   var dayNo=new Date().getDay();
-   //var dayNo=5;
+  // var dayNo=new Date().getDay();
+   var dayNo=5;
    if(dayNo==0 || dayNo==6){
        return`<div>Next Class is on Monday ${timeTable[0].details[0].subject} ${timeTable[0].details[0].LT} ${timeTable[0].details[0].StartingTime}</div>`
    }
@@ -185,21 +185,17 @@ function NextClass(){
     for (var key in timeTable) {
       var x = timeTable[key];
       if(x.day===days[dayNo]){
+      // console.log(key);
             storeKey=key;
-            var currentTime =new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
-            //var currentTime="17:29:00";
+            //var currentTime =new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
+            var currentTime="18:29:00";
             var length=(timeTable[key].details).length;
             //console.log(length);
             for(var data in timeTable[key].details){
-                //console.log(Date.parse('01/01/2011 10:20:45') > Date.parse('01/01/2011 5:10:10'));
                 if(Comparison(timeTable[key].details[data].FinishTime,timeTable[key].details[data].StartingTime,currentTime)){
                     flag=1;
                     var nextData=parseInt(data)+1;
-                    //console.log(data);
-                    //console.log(length!=parseInt(data)+1);
-
                     if(length!=parseInt(data)+1){
-
                         return`
                             <div>Currently going on ${timeTable[key].details[data].subject} class</div>
                             <div>Next class ${timeTable[key].details[nextData].subject} class</div><div>Subject: ${timeTable[key].details[nextData].subject}</div><div>LT: ${timeTable[key].details[nextData].LT}</div><div>Timing: ${timeTable[key].details[nextData].StartingTime}
@@ -207,7 +203,7 @@ function NextClass(){
                     }
                     else{
                         nextkey=parseInt(key)+1;
-                        if(nextkey==6){
+                        if(nextkey==5){
                             return`<div>Currently going on ${timeTable[key].details[data].subject} class</div>
                             <div>Next class ${timeTable[0].details[0].subject} class</div><div>Subject: ${timeTable[0].details[0].subject}</div><div>LT: ${timeTable[0].details[0].LT}</div><div>Timing: ${timeTable[0].details[0].StartingTime}`
                         }
@@ -227,7 +223,7 @@ function NextClass(){
     }
     //console.log(storeKey);
     storeKey=parseInt(storeKey)+1;
-    if((storeKey)==6){
+    if((storeKey)==5){
         return`<div>Next Class is on Monday ${timeTable[0].details[0].subject} ${timeTable[0].details[0].LT} ${timeTable[0].details[0].StartingTime}</div>`
     }
     else{
