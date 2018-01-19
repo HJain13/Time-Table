@@ -176,8 +176,8 @@ function checkingUpcoming(finish,start,current){
 function NextClass(){
     var flag=0;
     var days = ["Sunday","Monday","Tuesday","Wednesday","Thrusday","Friday","Saturday"];
-   // var dayNo=new Date().getDay();
-   var dayNo=1;
+   var dayNo=new Date().getDay();
+   //var dayNo=1;
    if(dayNo==0 || dayNo==6){
        return`<div>Next Class is on Monday ${timeTable[0].details[0].subject} ${timeTable[0].details[0].LT} ${timeTable[0].details[0].StartingTime}</div>`
    }
@@ -187,8 +187,8 @@ function NextClass(){
       if(x.day===days[dayNo]){
       // console.log(key);
             storeKey=key;
-            //var currentTime =new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
-            var currentTime="17:29:00";
+            var currentTime =new Date().getHours()+":"+new Date().getMinutes()+":"+new Date().getSeconds();
+            //var currentTime="17:29:00";
             var length=(timeTable[key].details).length;
             for(var data in timeTable[key].details){
                 if(Comparison(timeTable[key].details[data].FinishTime,timeTable[key].details[data].StartingTime,currentTime)){
